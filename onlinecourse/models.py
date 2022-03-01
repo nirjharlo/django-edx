@@ -129,6 +129,16 @@ class Question(models.Model):
         else:
             return False
 
+    def is_included_in_lesson(self, selected_ids):
+        if self.lesson_id == selected_ids:
+            return self.lesson_id;
+        else:
+            return False
+
+    def __str__(self):
+        return "question_text: " + self.question_text + "," + \
+               "lesson_id: " + str(self.lesson_id)
+
 
 #  <HINT> Create a Choice Model with:
     # Used to persist choice content for a question

@@ -24,10 +24,16 @@ class LessonAdmin(admin.ModelAdmin):
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ['question_text']
+    list_display = ('question_text', 'grade')
+    list_filter = ['grade']
+    search_fields = ['question_text']
 
 
 class ChoiceAdmin(admin.ModelAdmin):
     list_display = ['choice_text']
+    list_display = ('choice_text', 'is_correct')
+    list_filter = ['is_correct']
+    search_fields = ['choice_text']
 
 
 # <HINT> Register Question and Choice models here

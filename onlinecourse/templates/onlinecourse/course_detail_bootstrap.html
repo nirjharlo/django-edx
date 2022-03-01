@@ -48,6 +48,16 @@
                         <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
                         <div class="card-body">{{lesson.content}}</div>
                         <button onclick="#" class="btn btn-block btn-info">Start Exam</button>
+                        {% for question in course.question_set.all %}
+
+                            {% for lesson_fetch in question.lesson_id.all.values_list %}
+                              {% if lesson_fetch.0 == lesson.id %}
+                                  <div class="card-header"><h5>Question {{question.order|add:1}}: {{question.question_text}}</h5></div>
+                                  <div class="card-body">{{question.question_text}}</div>
+                              {% endif %}
+                            {% endfor %}
+
+                        {% endfor %}
                     </div>
                 {% endfor %}
             </div>

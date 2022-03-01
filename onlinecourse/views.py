@@ -8,6 +8,11 @@ from django.urls import reverse
 from django.views import generic
 from django.contrib.auth import login, logout, authenticate
 import logging
+
+from inspect import getmembers
+from pprint import pprint
+
+
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 # Create your views here.
