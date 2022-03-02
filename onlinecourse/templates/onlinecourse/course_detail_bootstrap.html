@@ -40,6 +40,8 @@
         </div>
     </nav>
 
+{{debug}}
+
     <!-- Page content -->
     <div class="container-fluid">
             <h2>{{ course.name }}</h2>
@@ -51,7 +53,8 @@
 
                         {% if course.question_set.all|is_button_available:lesson %}
                             <button onclick="#" class="btn btn-block btn-info">Start Exam</button>
-                            <form id="questionform" action="point to a submit view" method="post">
+                            <form id="questionform" action="/onlinecourse/course/{{course.id}}/submit/" method="post">
+                            {% csrf_token %}
                         {% endif %}
 
                         {% for question in course.question_set.all %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 # <HINT> Import any new Models here
-from .models import Course, Enrollment, Choice
+from .models import Course, Enrollment, Choice, Question, Submission
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -92,7 +92,6 @@ class CourseListView(generic.ListView):
 class CourseDetailView(generic.DetailView):
     model = Course
     template_name = 'onlinecourse/course_detail_bootstrap.html'
-    #queryset = self.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
@@ -124,6 +123,19 @@ def enroll(request, course_id):
          # Add each selected choice object to the submission object
          # Redirect to show_exam_result with the submission id
 #def submit(request, course_id):
+def submit(request, course_id):
+    enrollment = Enrollment.objects.get(user=request.user, course=course_id)
+    submission = Submission.objects.create(enrollment=enrollment)
+
+    choices = []
+    choice_str = 'choice_'
+    for item in dict(request.POST.items()).keys():
+        if choice_str in item:
+            choices.append(item[7:])
+
+    context = {}
+    context['debug'] = choices
+    return render(request, 'onlinecourse/course_detail_bootstrap.html', context)
 
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
@@ -144,3 +156,5 @@ def enroll(request, course_id):
         # For each selected choice, check if it is a correct answer or not
         # Calculate the total score
 #def show_exam_result(request, course_id, submission_id):
+def show_exam_result(request, course_id, submission_id):
+    return True
