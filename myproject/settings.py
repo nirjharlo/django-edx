@@ -66,6 +66,9 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'extra_tags': 'onlinecourse.templatetags.extra_tags',
+            }
         },
     },
 ]
@@ -124,4 +127,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
 MEDIA_URL = '/media/'
-

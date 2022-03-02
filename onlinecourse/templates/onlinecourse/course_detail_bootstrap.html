@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
 </head>
 
+{% load extra_tags %}
 <body>
     <!-- Navigation bar -->
     <nav class="navbar navbar-light bg-light">
@@ -52,10 +53,20 @@
 
                             {% for lesson_fetch in question.lesson_id.all.values_list %}
                               {% if lesson_fetch.0 == lesson.id %}
-                                  <div class="card-header"><h5>Question {{question.order|add:1}}: {{question.question_text}}</h5></div>
-                                  <div class="card-body">{{question.question_text}}</div>
-                              {% endif %}
-                            {% endfor %}
+
+                                  <div class="card-header"><h5>{{question.question_text}}</h5></div>
+                                  <div class="card-body">
+                                  {% for choice in choice.all %}
+                                    {% for linked_q in choice.questions.all.values_list %}
+                                      {% if linked_q.0 == question.id %}
+                                        <label><input type="checkbox" data-value="{{choice.0}}" /> {{choice.choice_text}}</label><br />
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% endfor %}
+                                  </div>
+
+                                {% endif %}
+                              {% endfor %}
 
                         {% endfor %}
                     </div>
