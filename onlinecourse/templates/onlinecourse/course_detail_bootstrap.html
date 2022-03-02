@@ -51,6 +51,7 @@
 
                         {% if course.question_set.all|is_button_available:lesson %}
                             <button onclick="#" class="btn btn-block btn-info">Start Exam</button>
+                            <form id="questionform" action="point to a submit view" method="post">
                         {% endif %}
 
                         {% for question in course.question_set.all %}
@@ -63,7 +64,11 @@
                                   {% for choice in choice.all %}
                                     {% for linked_q in choice.questions.all.values_list %}
                                       {% if linked_q.0 == question.id %}
-                                        <label><input type="checkbox" class="form-check-input" name="choice_{{choice.id}}" value="{{choice.id}}" /> {{choice.choice_text}}</label><br />
+                                        <div class="form-group">
+                                          <div class="form-check">
+                                            <label><input type="checkbox" class="form-check-input" name="choice_{{choice.id}}" value="{{choice.id}}" /> {{choice.choice_text}}</label><br />
+                                          </div>
+                                        </div>
                                       {% endif %}
                                     {% endfor %}
                                   {% endfor %}
@@ -76,6 +81,7 @@
 
                         {% if course.question_set.all|is_button_available:lesson %}
                             <input class="btn btn-success btn-block" type="submit" value="Submit">
+                            </form>
                         {% endif %}
                     </div>
                 {% endfor %}
