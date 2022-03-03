@@ -160,23 +160,43 @@ def submit(request, course_id):
         # Calculate the total score
 #def show_exam_result(request, course_id, submission_id):
 def show_exam_result(request, course_id, submission_id):
+    correct_grade = 0
+
     course = get_object_or_404(Course, pk=course_id)
     submission = get_object_or_404(Submission, pk=submission_id)
     choices_all = Choice.objects.all()
     choices = submission.choices.all()
 
-    correct_answers = list()
     total_grade = 0
-    correct_grade = 0
+    total_correct_answers_dict = dict()
     questions = Question.objects.filter(course=course)
     for question in questions:
+        total_correct_answers_dict[question.id] = []
         total_grade = total_grade + question.grade
-        for choice in choices:
+        for choice in choices_all:
             if question in choice.questions.all():
                 if choice.is_correct == 1:
-                    correct_answers.append(choice)
-                    correct_grade = correct_grade + question.grade
+                    total_correct_answers_dict[question.id].append(choice.id)
 
+
+    correct_answers = list()
+    correct_grade_dict = dict()
+    correct_answers_dict = dict()
+    for question_alt in questions:
+        correct_answers_dict[question_alt.id] = []
+        for choice in choices:
+            if question_alt in choice.questions.all():
+                if choice.is_correct == 1:
+                    correct_answers.append(choice)
+                    correct_grade_dict[question_alt.id] = question.grade
+                    correct_answers_dict[question_alt.id].append(choice.id)
+
+    for q, ans in total_correct_answers_dict.items():
+        if len(correct_answers_dict[q]) != len(ans):
+            correct_grade_dict[q] = 0
+
+
+    correct_grade = sum(correct_grade_dict.values())
     grade = round(( (correct_grade/total_grade) * 100 ), 2)
 
     context = {}
@@ -187,4 +207,7 @@ def show_exam_result(request, course_id, submission_id):
     context['questions'] = questions
     context['choices'] = choices_all
     context['correct_answers'] = correct_answers
+    context['correct_grade_dict'] = correct_grade_dict
+    context['correct_answers_dict'] = correct_answers_dict
+    context['total_correct_answers_dict'] = total_correct_answers_dict
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)

@@ -51,7 +51,7 @@
                         <div class="card-body">{{lesson.content}}</div>
 
                         {% if course.question_set.all|is_button_available:lesson %}
-                            <button onclick="#" class="btn btn-block btn-info">Start Exam</button>
+                            <button id="showQuestions" onclick="#" class="btn btn-block btn-info">Start Exam</button>
                             <form id="questionform" action="/onlinecourse/course/{{course.id}}/submit/" method="post">
                             {% csrf_token %}
                         {% endif %}
@@ -137,4 +137,12 @@
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
     </div>
 </body>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#questionform').hide();
+    $('#showQuestions').on('click', function() {
+      $('#questionform').toggle();
+    });
+  });
+</script>
 </html>
