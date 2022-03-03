@@ -28,7 +28,8 @@ DEBUG = True
 
 # <HINT> add your cloud host here
 ALLOWED_HOSTS = [
-    'django-edx-nirjharlo.herokuapp.com'
+    'django-edx-nirjharlo.herokuapp.com',
+    '127.0.0.1'
 ]
 
 
