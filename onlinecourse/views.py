@@ -9,6 +9,8 @@ from django.views import generic
 from django.contrib.auth import login, logout, authenticate
 import logging
 
+from django.http import HttpResponse
+
 from inspect import getmembers
 from pprint import pprint
 
@@ -124,17 +126,20 @@ def enroll(request, course_id):
          # Redirect to show_exam_result with the submission id
 #def submit(request, course_id):
 def submit(request, course_id):
-    enrollment = Enrollment.objects.get(user=request.user, course=course_id)
+    course = get_object_or_404(Course, pk=course_id)
+    enrollment = Enrollment.objects.get(user=request.user, course=course)
     submission = Submission.objects.create(enrollment=enrollment)
 
     choices = []
     choice_str = 'choice_'
     for item in dict(request.POST.items()).keys():
         if choice_str in item:
-            choices.append(item[7:])
+            choice = int(item[7:])
+            choice = get_object_or_404(Choice, pk=choice)
+            submission.choices.add(choice)
 
     context = {}
-    context['debug'] = choices
+    context['debug'] = submission
     return render(request, 'onlinecourse/course_detail_bootstrap.html', context)
 
 
