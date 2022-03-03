@@ -59,7 +59,7 @@
                   {% if linked_q.0 == question.id %}
                     <div class="form-group">
                       <div class="form-check">
-                        <label class="alert alert-{{ correct_answers|is_choice_correct:choice }}">{{correct_answers|choice_status:choice}} {{choice.choice_text}}</label><br />
+                        <label class="text text-{{ correct_answers|is_choice_correct:choice }}">{{correct_answers|choice_status:choice}} {{choice.choice_text}}</label><br />
                       </div>
                     </div>
                   {% endif %}
